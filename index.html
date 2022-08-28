@@ -36,9 +36,9 @@
     </li>
 </ul>
 <h1>Solution</h1>
-<p>In the case of a <b>default port for a technology</b>, we could behave a CRC-16/ARC conversion of the <b>lowercase
+<p>In the case of a <b>default port for a technology</b>, we could behave a CRC-16/ARC* conversion of the <b>lowercase
     technology name</b> or meaningful acronym or short version/</p>
-<p>In the case of a port for a <b>specific deployment of a service</b>, we could behave a CRC-16/ARC conversion of the
+<p>In the case of a port for a <b>specific deployment of a service</b>, we could behave a CRC-16/ARC* conversion of the
     <b>domain name</b> assuming that we can make unique domain names per service</p>
 <p>* For either case, we do not desire a port number below 1024 and where we encounter that, just add 1024 to the
     previously calculated number.</p>
@@ -49,7 +49,7 @@
     <li>http://hostname:<b>a-term</b>/path/to/resource</li>
 </ol>
 <p>
-    For technology 'Servirtium' the CRC-16/ARC is 61417. These would be the equivalents under such a standard:
+    For technology 'Servirtium' the CRC-16/ARC* is 61417. These would be the equivalents under such a standard:
 <ol>
     <li>http://hostname:<span style="background-color: yellow">servirtium</span>/a/b/c.json</li>
     <li>http://hostname:<span style="background-color: yellow">61417</span>/a/b/c.json</li>
@@ -61,7 +61,7 @@
 </p>
 <p>
     The <a href="https://sinatrarb.com/">Sinatra web framework for Ruby</a> uses 4567 as the default port for
-    non-production instances. Were they to go back in time and use this CRC-16/ARC with the above <i>1024 trick</i>
+    non-production instances. Were they to go back in time and use this CRC-16/ARC* with the above <i>1024 trick</i>
     instead of 4567 the calculation would yield 39192 (not quite so alluring).
 </p>
 <ol>
