@@ -41,7 +41,7 @@
 <p>In the case of a port for a <b>specific deployment of a service</b>, we could behave a CRC-16/ARC* conversion of the
     <b>domain name</b> assuming that we can make unique domain names per service</p>
 <p>* For either case, we do not desire a port number below 1024 and where we encounter that, just add 1024 to the
-    previously calculated number.</p>
+    previously calculated number. There's a case to be made for adding something like "a" to the string and running CRC-16/ARC again so the result is over 1024 (repeat until it is), but straight add of 1024 is easier.</p>
 <h2>Standard</h2>
 <p>If this ever gained wide adoption or a W3C standard, we could (framework/lang permitting) form URLs like so:
 </p>
