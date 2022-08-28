@@ -1,0 +1,1 @@
+All is explained in the GitHub-Page hosted page - https://paul-hammant.github.io/port-calculator/#type_a_word_in_the_url_and_reload
