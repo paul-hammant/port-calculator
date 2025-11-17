@@ -5,21 +5,55 @@
     <title>CRC-16/ARC checksum of the URL's "hash" portion to decimal</title>
 </head>
 <body>
-<script>
-    let strings = window.location.href.split("#");
-    txtValue = strings.pop();
-    if (strings.length === 0 || "" === txtValue) {
-        txtValue = "#type_a_word_in_the_url_and_reload";
-        window.location.href = txtValue;
-    }
-</script>
 <h1>Summary</h1>
+<div>
+    <label for="inputText">Enter text: </label>
+    <input type="text" id="inputText" size="40" style="font-size: 1.1em; padding: 4px;">
+</div>
+<br>
+<div id="result"></div>
 <script type="text/javascript" src="javascript_calculation.js"></script>
 <script type="text/javascript">
-    document.write("<p>CRC-16/ARC<sup>*</sup> checksum of <span style=\"background-color: lightgreen\">" + txtValue + "</span> is <span style=\"background-color: lightgreen\">" + number + "</span></p>");
-    if (recalcd) {
-        document.write("<br>Because we dislike port numbers below 1024 and that was the initial crc16Arc, we simply added 1024 to the calculated number.");
+    const inputField = document.getElementById('inputText');
+    const resultDiv = document.getElementById('result');
+
+    function calculate() {
+        // Get value from hash or use default
+        let txtValue = window.location.hash.substring(1) || 'type_a_word_in_the_url';
+
+        // Update input field if it doesn't match (avoid cursor jump)
+        if (inputField.value !== txtValue) {
+            inputField.value = txtValue;
+        }
+
+        // Calculate CRC
+        let number = crc16ArcStr(txtValue.toLowerCase());
+        let recalcd = false;
+        if (number < 1024) {
+            number = number + 1024;
+            recalcd = true;
+        }
+
+        // Update display
+        let html = '<p>CRC-16/ARC<sup>*</sup> checksum of <span style="background-color: lightgreen">' +
+                   txtValue + '</span> is <span style="background-color: lightgreen">' +
+                   number + '</span></p>';
+        if (recalcd) {
+            html += '<br>Because we dislike port numbers below 1024 and that was the initial crc16Arc, we simply added 1024 to the calculated number.';
+        }
+        resultDiv.innerHTML = html;
     }
+
+    // Listen for hash changes
+    window.addEventListener('hashchange', calculate);
+
+    // Listen for input changes and update hash
+    inputField.addEventListener('input', function() {
+        window.location.hash = inputField.value;
+    });
+
+    // Initial calculation
+    calculate();
 </script>
 
 <h1>Implementations</h1>
