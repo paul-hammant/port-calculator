@@ -1,81 +1,31 @@
-<!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<!doctype html>
+<html>
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>CRC-16/ARC checksum of the URL's "hash" portion to decimal</title>
+  <meta charset="utf-8">
+  <title>Port Calculator</title>
+  <style>
+    body { font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; padding: 1.25rem; max-width: 700px; margin: auto; }
+    label { display:block; margin-bottom: .25rem; font-weight:600; }
+    input[type="text"] { width: 100%; padding: .5rem; font-size: 1rem; box-sizing: border-box; }
+    .row { margin: 1rem 0; }
+    #result { font-size: 1.25rem; font-weight: 700; margin-top: .5rem; }
+    .hint { color: #666; font-size: .9rem; margin-top:.25rem; }
+  </style>
 </head>
 <body>
-<script>
-    let strings = window.location.href.split("#");
-    txtValue = strings.pop();
-    if (strings.length === 0 || "" === txtValue) {
-        txtValue = "#type_a_word_in_the_url_and_reload";
-        window.location.href = txtValue;
-    }
-</script>
-<h1>Summary</h1>
-<script type="text/javascript" src="javascript_calculation.js"></script>
-<script type="text/javascript">
-    document.write("<p>CRC-16/ARC<sup>*</sup> checksum of <span style=\"background-color: lightgreen\">" + txtValue + "</span> is <span style=\"background-color: lightgreen\">" + number + "</span></p>");
-    if (recalcd) {
-        document.write("<br>Because we dislike port numbers below 1024 and that was the initial crc16Arc, we simply added 1024 to the calculated number.");
-    }
-</script>
+  <h1>Port calculator</h1>
 
-<h1>Implementations</h1>
-<h2>This in-page JavaScript implementation</h2>
-<a href="javascript_calculation.js">./javascript_calculation.js</a>. See also GitHub Project source for the same:
-<a href="javascript_calculation.js">https://github.com/paul-hammant/port-calculator/blob/master/javascript_calculation.js</a>
-<h2>Other Languages</h2>
-<p>TODO</p>
-<h1>Rationale/Problem</h1>
-<ul>
-    <li>You have a new open source tech that's going to listen on a port, but which port to pick for that?</li>
-    <li>Wanna make <b>super sure</b> that QA backend-for-frontend isn't hitting production biz-logic or database?
-        Especially in the container era. Or maybe UAT/staging or Shared-Dev instead of QA
-    </li>
-</ul>
-<h1>Solution</h1>
-<p>In the case of a <b>default port for a technology</b>, we could behave a CRC-16/ARC* conversion of the <b>lowercase
-    technology name</b> or meaningful acronym or short version/</p>
-<p>In the case of a port for a <b>specific deployment of a service</b>, we could behave a CRC-16/ARC* conversion of the
-    <b>domain name</b> assuming that we can make unique domain names per service</p>
-<p>* For either case, we do not desire a port number below 1024 and where we encounter that, just add 1024 to the
-    previously calculated number. There's a case to be made for adding something like "a" to the string and running CRC-16/ARC again so the result is over 1024 (repeat until it is), but straight add of 1024 is easier.</p>
-<h2>Standard</h2>
-<p>If this ever gained wide adoption or a W3C standard, we could (framework/lang permitting) form URLs like so:
-</p>
-<ol>
-    <li>http://hostname:<b>a-term</b>/path/to/resource</li>
-</ol>
-<p>
-    For technology 'Servirtium' the CRC-16/ARC* is 61417. These would be the equivalents under such a standard:
-<ol>
-    <li>http://hostname:<span style="background-color: yellow">servirtium</span>/a/b/c.json</li> - with a new W3C standard
-    <li>http://hostname:<span style="background-color: yellow">61417</span>/a/b/c.json</li> - as is today
-</ol>
-<p>
-    As it happens testing technology <a href="https://servirtium.dev">Servirtium</a>> did use this process to pick a
-    default
-    port number.
-</p>
-<p>
-    The <a href="https://sinatrarb.com/">Sinatra web framework for Ruby</a> uses 4567 as the default port for
-    non-production instances. Were they to go back in time and use this CRC-16/ARC* with the above <i>1024 trick</i>
-    instead of 4567 the calculation would yield 39192 (not quite so alluring).
-</p>
-<ol>
-    <li>http://hostname:<span style="background-color: pink">sinatra</span>/hello</li> - with a new W3C standard
-    <li>http://hostname:<span style="background-color: pink">39192</span>/hello</li> - as is today or would be if the team hadn't picked 4567 already
-</ol>
-<h2>History</h2>
-<p>Half baked idea that started this: <a href="https://twitter.com/paul_hammant/status/1034101037114769408">
-    I tweeted about not remembering a server technology's default port</a></p>
-<h2>Pseudocode</h2>
-<pre>
-port_num = crc16Arc(term.to_lower_case())
-if (number < 1024):
-    port_num = port_num + 1024
-</pre>
+  <div class="row">
+    <label for="wordInput">Word (also read from URL hash)</label>
+    <input id="wordInput" type="text" placeholder="Type a word (or use #word in the URL)"/>
+    <div class="hint">The URL hash is kept in sync (no page reload). Example: https://.../#example</div>
+  </div>
+
+  <div class="row">
+    <label>Calculated port(s)</label>
+    <div id="result">—</div>
+  </div>
+
+  <script src="javascript_calculation.js"></script>
 </body>
 </html>
